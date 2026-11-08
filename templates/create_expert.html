@@ -1,0 +1,391 @@
+﻿
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ایجاد کارشناس جدید</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Tahoma, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: linear-gradient(135deg,#ff8fab,#c8a2ff,#8bd3ff,#8debc5);
+    background-size: 300% 300%;
+    animation: gradient 12s ease infinite;
+}
+
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* اشکال تزئینی */
+
+.circle {
+    position: fixed;
+    border-radius: 50%;
+    opacity: .3;
+    pointer-events: none;
+}
+
+.one {
+    width: 180px;
+    height: 180px;
+    background: white;
+    top: -60px;
+    right: -40px;
+}
+
+.two {
+    width: 150px;
+    height: 150px;
+    background: #fff36b;
+    bottom: -50px;
+    left: -40px;
+}
+
+/* کارت اصلی */
+
+.container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 480px;
+    padding: 25px 28px;
+    border-radius: 24px;
+    background: white;
+    text-align: center;
+    box-shadow: 0 18px 55px rgba(83,45,130,.2);
+}
+
+/* لوگو */
+
+.logo {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 19px;
+    font-size: 29px;
+    background: linear-gradient(135deg,#ff80ab,#a78bfa);
+    box-shadow: 0 7px 18px rgba(167,139,250,.3);
+}
+
+h1 {
+    font-size: 21px;
+    color: #39275f;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    font-size: 11px;
+    color: #9990b1;
+    margin-bottom: 17px;
+}
+
+/* اطلاعات مدیر */
+
+.user-info {
+    display: block;
+    padding: 11px 13px;
+    margin-bottom: 17px;
+    border-radius: 11px;
+    background: linear-gradient(100deg,#fff0f5,#f2edff);
+    border-right: 5px solid #ff80ab;
+    color: #654a93;
+    font-size: 12px;
+    text-align: right;
+    line-height: 1.8;
+}
+
+.user-info strong {
+    color: #a34db4;
+}
+
+/* فرم */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 13px;
+    text-align: right;
+}
+
+.form-group {
+    min-width: 0;
+}
+
+label {
+    display: block;
+    color: #554875;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.input-box {
+    position: relative;
+}
+
+.input-box input {
+    width: 100%;
+    height: 40px;
+    padding: 0 36px 0 10px;
+    border: 1.5px solid #f0ecfa;
+    border-radius: 11px;
+    background: #faf9ff;
+    color: #45366b;
+    font-family: Tahoma,sans-serif;
+    font-size: 12px;
+    outline: none;
+    transition: .25s;
+    direction: rtl;
+}
+
+.input-box input:focus {
+    background: white;
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 3px rgba(167,139,250,.12);
+}
+
+.input-box input::placeholder {
+    color: #b9b1cb;
+}
+
+.input-icon {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+}
+
+/* دکمه */
+
+.submit-btn {
+    width: 100%;
+    height: 45px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(100deg,#ff75a0,#a178f5);
+    color: white;
+    font-family: Tahoma,sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 7px 18px rgba(177,116,226,.3);
+    transition: .3s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(177,116,226,.4);
+}
+
+.submit-btn:active {
+    transform: scale(.97);
+}
+
+/* پایین کارت */
+
+.footer {
+    margin-top: 15px;
+    font-size: 10px;
+    color: #aaa2bd;
+}
+
+.footer span {
+    color: #ff75a0;
+}
+
+/* موبایل */
+
+@media(max-width:480px) {
+    .container {
+        padding: 22px 18px;
+    }
+
+    h1 {
+        font-size: 19px;
+    }
+}
+
+@media(max-width:350px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-height:600px) {
+    .container {
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .logo {
+        width: 43px;
+        height: 43px;
+        font-size: 23px;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        margin-bottom: 10px;
+    }
+
+    .user-info {
+        margin-bottom: 10px;
+        padding: 7px 10px;
+    }
+
+    .form-grid {
+        gap: 7px 11px;
+    }
+
+    .input-box input {
+        height: 35px;
+    }
+
+    .submit-btn {
+        margin-top: 10px;
+        height: 38px;
+    }
+
+    .footer {
+        margin-top: 7px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    *,*::before,*::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="circle one"></div>
+<div class="circle two"></div>
+
+<div class="container">
+
+    <div class="logo">👨‍💻</div>
+
+    <h1>ایجاد کارشناس جدید ✨</h1>
+
+    <p class="subtitle">
+        اطلاعات کارشناس جدید را وارد کنید
+    </p>
+
+    <form method="post"
+          enctype="multipart/form-data"
+          action="/user/{{username}}/add_expert">
+
+        <div class="user-info">
+            👤 در حال ثبت کارشناس جدید توسط:
+            <strong>{{username}}</strong>
+        </div>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="pname">نام و نام خانوادگی</label>
+                <div class="input-box">
+                    <span class="input-icon">👤</span>
+                    <input type="text" name="pname" id="pname"
+                    placeholder="نام و نام خانوادگی" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="puser">نام کاربری</label>
+                <div class="input-box">
+                    <span class="input-icon">🪪</span>
+                    <input type="text" name="puser" id="puser"
+                    placeholder="نام کاربری" required
+                    autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ppass">رمز ورود</label>
+                <div class="input-box">
+                    <span class="input-icon">🔐</span>
+                    <input type="password" name="ppass" id="ppass"
+                    placeholder="رمز عبور" required
+                    autocomplete="new-password">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ptel">شماره تلفن</label>
+                <div class="input-box">
+                    <span class="input-icon">📱</span>
+                    <input type="tel" name="ptel" id="ptel"
+                    placeholder="شماره تلفن">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pemail">آدرس ایمیل</label>
+                <div class="input-box">
+                    <span class="input-icon">💌</span>
+                    <input type="email" name="pemail" id="pemail"
+                    placeholder="ایمیل">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pstatus">وضعیت</label>
+                <div class="input-box">
+                    <span class="input-icon">🟢</span>
+                    <input type="text" name="pstatus" id="pstatus"
+                    value="logout" placeholder="وضعیت">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="prole">نقش کاربر</label>
+                <div class="input-box">
+                    <span class="input-icon">🎭</span>
+                    <input type="text" name="prole" id="prole"
+                    value="expert" placeholder="نقش">
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" name="psubmit"
+        id="psubmit" class="submit-btn">
+            ایجاد کاربری 🚀
+        </button>
+
+    </form>
+
+    <div class="footer">
+        ساخته شده با <span>♥</span> برای شما
+    </div>
+
+</div>
+
+</body>
+</html>

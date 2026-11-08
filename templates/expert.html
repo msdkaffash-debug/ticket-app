@@ -1,0 +1,1680 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>پنل تیکت ها</title>
+
+<style>
+
+/* =========================
+تنظیمات عمومی
+========================= */
+
+* {
+box-sizing: border-box;
+}
+
+:root {
+--primary: #315b9d;
+--primary-dark: #254779;
+--primary-light: #edf3fc;
+
+--background: #e3f3e9;
+--surface: #ffffff;
+
+--border: #acf091;
+--text: #273449;
+--muted: #78869b;
+
+--success: #16845b;
+--warning: #c28a24;
+--danger: #c54d4d;
+
+--radius: 5px;
+}
+
+body {
+margin: 0;
+padding: 18px;
+
+background: var(--background);
+color: var(--text);
+
+font-family: Tahoma, Arial, sans-serif;
+font-size: 12px;
+line-height: 1.8;
+}
+
+a {
+color: inherit;
+text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+font-family: Tahoma, Arial, sans-serif;
+}
+
+/* =========================
+ساختار اصلی دو ستونه
+========================= */
+
+.page-layout {
+width: 100%;
+max-width: 1800px;
+
+margin: auto;
+
+display: grid;
+
+grid-template-columns: minmax(0, 1fr) 255px;
+
+gap: 16px;
+
+align-items: start;
+
+direction: rtl;
+}
+
+/* ستون اصلی سمت چپ */
+
+.main-column {
+min-width: 0;
+
+display: flex;
+flex-direction: column;
+
+gap: 16px;
+}
+
+/* ستون باریک سمت راست */
+
+.sidebar {
+min-width: 0;
+
+display: flex;
+flex-direction: column;
+
+gap: 12px;
+
+position: sticky;
+top: 15px;
+}
+
+/* =========================
+کارت ها
+========================= */
+
+.card {
+background: var(--surface);
+
+border: 1px solid var(--border);
+
+border-radius: var(--radius);
+
+overflow: hidden;
+}
+
+.card-header {
+padding: 12px 16px;
+
+background: #aef3ca;
+
+border-bottom: 1px solid var(--border);
+
+display: flex;
+align-items: center;
+justify-content: space-between;
+
+gap: 10px;
+}
+
+.card-title {
+font-size: 13px;
+font-weight: bold;
+color: #0f0281;
+}
+
+.card-body {
+padding: 16px;
+}
+
+.small-label {
+color: var(--muted);
+font-size: 11px;
+}
+
+/* =========================
+جستجو و فیلتر
+========================= */
+
+.filter-toolbar {
+display: grid;
+
+grid-template-columns:
+minmax(180px, 1fr)
+170px
+150px
+auto;
+
+gap: 9px;
+
+padding: 13px 16px;
+
+background: #fff;
+
+border-bottom: 1px solid var(--border);
+
+align-items: center;
+}
+
+.filter-control {
+width: 100%;
+height: 37px;
+
+padding: 7px 10px;
+
+border: 1px solid #dce2eb;
+
+border-radius: 4px;
+
+background: #fff;
+
+color: var(--text);
+
+font-size: 11px;
+
+outline: none;
+}
+
+.filter-control:focus {
+border-color: var(--primary);
+}
+
+.filter-search {
+background: #f8fafc;
+}
+
+.filter-clear {
+height: 37px;
+
+padding: 0 13px;
+
+border: 1px solid #e1e6ee;
+
+border-radius: 4px;
+
+background: #f2f4f8;
+
+color: #526178;
+
+font-size: 11px;
+
+cursor: pointer;
+}
+
+.filter-clear:hover {
+background: #e6ebf3;
+}
+
+.filter-result {
+padding: 9px 16px;
+
+background: #fafbfd;
+
+border-bottom: 1px solid var(--border);
+
+color: var(--muted);
+
+font-size: 11px;
+}
+
+.filter-result strong {
+color: var(--primary);
+}
+
+.no-results {
+display: none;
+
+padding: 30px 10px;
+
+text-align: center;
+
+color: var(--muted);
+
+background: white;
+}
+
+/* =========================
+جدول تیکت ها
+========================= */
+
+.table-container {
+width: 100%;
+height: 390px;
+
+overflow: auto;
+
+direction: rtl;
+}
+
+table {
+width: 100%;
+min-width: 950px;
+
+border-collapse: separate;
+border-spacing: 0;
+
+text-align: right;
+
+font-size: 11px;
+}
+
+thead th {
+position: sticky;
+top: 0;
+z-index: 2;
+
+background: #e3fae1;
+
+color: #43516a;
+
+padding: 10px 9px;
+
+font-weight: bold;
+
+white-space: nowrap;
+
+border-bottom: 1px solid #d4dce8;
+}
+
+tbody td {
+padding: 8px 9px;
+
+white-space: nowrap;
+
+background: white;
+
+border-bottom: 1px solid #edf0f4;
+
+color: #4a586d;
+
+height: 38px;
+}
+
+tbody tr {
+cursor: pointer;
+
+transition: background 0.15s;
+}
+
+tbody tr:hover td {
+background: #edf4ff;
+}
+
+tbody tr:last-child td {
+border-bottom: none;
+}
+
+.code {
+direction: rtl;
+text-align: right;
+
+color: var(--primary);
+
+font-weight: bold;
+}
+
+.message {
+max-width: 180px;
+
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/* وضعیت */
+
+.status {
+display: inline-block;
+
+padding: 2px 7px;
+
+border-radius: 3px;
+
+font-size: 10px;
+font-weight: bold;
+}
+
+.status-new {
+background: #eaf1ff;
+color: #315b9d;
+}
+
+.status-done {
+background: #e7f6ee;
+color: #16845b;
+}
+
+.status-pending {
+background: #fff5df;
+color: #ae791c;
+}
+
+.status-other {
+background: #f0f2f5;
+color: #64748b;
+}
+
+/* =========================
+اطلاعات تیکت
+========================= */
+
+.ticket-info {
+display: grid;
+
+grid-template-columns: repeat(2, minmax(0, 1fr));
+
+gap: 10px;
+
+margin-bottom: 16px;
+}
+
+.info-item {
+padding: 10px;
+
+background: #f7f9fc;
+
+border: 1px solid #e9edf3;
+
+border-radius: 4px;
+
+min-width: 0;
+}
+
+.info-item.full {
+grid-column: 1 / -1;
+}
+
+.info-label {
+display: block;
+
+color: var(--muted);
+
+font-size: 10px;
+
+margin-bottom: 3px;
+}
+
+.info-value {
+color: #34445c;
+
+font-weight: bold;
+
+overflow-wrap: anywhere;
+}
+
+/* =========================
+مکاتبات
+========================= */
+
+.conversation {
+margin-top: 14px;
+}
+
+.conversation-title {
+font-weight: bold;
+
+font-size: 12px;
+
+color: #43516a;
+
+padding-bottom: 8px;
+
+border-bottom: 1px solid var(--border);
+
+margin-bottom: 12px;
+}
+
+.message-box {
+padding: 12px;
+
+background: #f2f6fc;
+
+border-right: 3px solid #6a8fc7;
+
+border-radius: 3px;
+
+margin-bottom: 12px;
+
+line-height: 2;
+
+overflow-wrap: anywhere;
+}
+
+.reply-message {
+padding: 12px;
+
+background: #f5f8f6;
+
+border-right: 3px solid #68a887;
+
+border-radius: 3px;
+
+margin-bottom: 10px;
+
+line-height: 2;
+
+overflow-wrap: anywhere;
+}
+
+.reply-message a{
+border:1px dashed blue;
+background-color: #d6e4fd;
+padding:3pt;
+}
+
+.msg {
+border:1px solid rgb(148, 156, 25);
+background-color: #fffeb0;
+padding:3pt;    
+border-radius: 4pt;
+}
+
+/* =========================
+فایل های پیوست
+========================= */
+
+.attachments {
+margin-top: 15px;
+
+padding: 12px;
+
+background: #f8f9fc;
+
+border: 1px solid var(--border);
+
+border-radius: 4px;
+}
+
+.attachments a {
+display: inline-block;
+
+color: var(--primary);
+
+margin: 4px 0;
+}
+
+.attachments a:hover {
+text-decoration: underline;
+}
+
+/* =========================
+فرم پاسخ
+========================= */
+
+.form-section {
+margin-top: 18px;
+
+padding-top: 16px;
+
+border-top: 1px solid var(--border);
+}
+
+.form-title {
+font-size: 13px;
+
+font-weight: bold;
+
+margin-bottom: 12px;
+
+color: #34445c;
+}
+
+.form-control {
+display: block;
+
+width: 100%;
+
+padding: 10px 11px;
+
+margin-bottom: 12px;
+
+background: #fff;
+
+border: 1px solid #dce2eb;
+
+border-radius: 4px;
+
+font-size: 12px;
+
+color: var(--text);
+
+outline: none;
+
+transition: border-color 0.2s;
+}
+
+.form-control:focus {
+border-color: #648ac1;
+
+box-shadow: 0 0 0 2px rgba(75, 120, 190, 0.08);
+}
+
+.form-control::placeholder {
+color: #a1aab8;
+}
+
+textarea.form-control {
+resize: vertical;
+
+min-height: 130px;
+
+line-height: 2;
+}
+
+input[type="file"].form-control {
+background: #f8fafc;
+
+padding: 8px;
+}
+
+/* =========================
+دکمه ها
+========================= */
+
+.btn {
+display: inline-block;
+
+border: none;
+
+border-radius: 4px;
+
+padding: 9px 18px;
+
+font-size: 12px;
+
+cursor: pointer;
+
+transition: 0.2s;
+
+text-align: center;
+}
+
+.btn-primary {
+background: var(--primary);
+
+color: white;
+}
+
+.btn-primary:hover {
+background: var(--primary-dark);
+}
+
+.btn-secondary {
+background: #edf1f7;
+
+color: #46566e;
+
+border: 1px solid #dce2eb;
+}
+
+.btn-danger {
+background: #fff0f0;
+
+color: var(--danger);
+
+border: 1px solid #f0dada;
+}
+
+.btn-block {
+width: 100%;
+}
+
+.action-row {
+display: flex;
+
+gap: 8px;
+
+flex-wrap: wrap;
+
+margin-top: 12px;
+}
+
+.forward-input {
+flex: 1;
+
+min-width: 150px;
+}
+
+/* =========================
+سایدبار
+========================= */
+
+.profile-card {
+padding: 15px;
+
+background: #fff;
+
+border: 1px solid var(--border);
+
+border-radius: var(--radius);
+}
+
+.profile-title {
+font-size: 13px;
+
+font-weight: bold;
+
+margin-bottom: 12px;
+
+color: #34445c;
+}
+
+.profile-row {
+padding: 7px 0;
+
+border-bottom: 1px solid #f0f2f6;
+
+display: flex;
+
+justify-content: space-between;
+
+gap: 8px;
+
+align-items: center;
+
+overflow-wrap: anywhere;
+}
+
+.profile-row:last-child {
+border-bottom: none;
+}
+
+.profile-row span:first-child {
+color: var(--muted);
+
+white-space: nowrap;
+}
+
+.profile-row span:last-child {
+text-align: left;
+
+font-weight: bold;
+
+overflow-wrap: anywhere;
+}
+
+.sidebar-section {
+background: white;
+
+border: 1px solid var(--border);
+
+border-radius: var(--radius);
+
+overflow: hidden;
+}
+
+.sidebar-heading {
+padding: 10px 13px;
+
+font-size: 12px;
+
+font-weight: bold;
+
+background: #d9f1c7;
+
+border-bottom: 1px solid var(--border);
+
+color: #43516a;
+}
+
+.sidebar-list {
+padding: 5px 10px;
+}
+
+.sidebar-list a {
+display: block;
+
+padding: 8px 7px;
+
+border-bottom: 1px solid #f0f2f6;
+
+color: #58677c;
+
+transition: 0.15s;
+
+overflow-wrap: anywhere;
+}
+
+.sidebar-list a:last-child {
+border-bottom: none;
+}
+
+.sidebar-list a:hover {
+color: var(--primary);
+
+background: #f2f6fc;
+}
+
+.sidebar-link {
+display: block;
+
+padding: 10px 12px;
+
+border-bottom: 1px solid #edf0f4;
+
+color: #40516b;
+}
+
+.sidebar-link:hover {
+background: #f3f6fb;
+
+color: var(--primary);
+}
+
+.counter {
+display: inline-block;
+
+min-width: 22px;
+
+padding: 1px 6px;
+
+background: #eaf1fb;
+
+color: var(--primary);
+
+border-radius: 3px;
+
+text-align: center;
+
+font-size: 10px;
+}
+
+.logout-link {
+color: #c14d4d;
+}
+
+.user-data {
+padding: 10px;
+
+font-size: 10px;
+
+color: #78869b;
+
+line-height: 2;
+
+overflow-wrap: anywhere;
+
+border-bottom: 1px solid #f0f2f6;
+}
+
+/* =========================
+تبلت
+========================= */
+
+@media (max-width: 1000px) {
+
+.page-layout {
+grid-template-columns: minmax(0, 1fr) 220px;
+
+gap: 10px;
+}
+
+body {
+padding: 10px;
+}
+
+}
+
+/* =========================
+موبایل
+========================= */
+
+@media (max-width: 700px) {
+
+body {
+padding: 8px;
+}
+
+.page-layout {
+display: flex;
+
+flex-direction: column;
+
+gap: 12px;
+}
+
+.main-column,
+.sidebar {
+width: 100%;
+}
+
+.sidebar {
+position: static;
+
+order: 2;
+}
+
+.main-column {
+order: 1;
+}
+
+.table-container {
+height: 320px;
+}
+
+.card-body {
+padding: 11px;
+}
+
+.ticket-info {
+grid-template-columns: 1fr;
+}
+
+.info-item.full {
+grid-column: auto;
+}
+
+.action-row {
+flex-direction: column;
+}
+
+.action-row .btn {
+width: 100%;
+}
+
+.filter-toolbar {
+grid-template-columns: 1fr 1fr;
+}
+
+.filter-search {
+grid-column: 1 / -1;
+}
+
+}
+
+/* =========================
+موبایل کوچک
+========================= */
+
+@media (max-width: 450px) {
+
+.filter-toolbar {
+grid-template-columns: 1fr;
+}
+
+.filter-search {
+grid-column: auto;
+}
+
+.filter-clear {
+width: 100%;
+}
+
+}
+
+@media (max-width: 380px) {
+
+body {
+padding: 5px;
+}
+
+.card-header {
+padding: 10px;
+}
+
+.form-control {
+font-size: 11px;
+}
+
+.table-container {
+height: 280px;
+}
+
+}
+
+sub {
+    background-color: rgb(209, 243, 230);
+    border: 1pt dotted yellow;
+    padding:3pt
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="page-layout">
+
+<!-- =================================
+ستون اصلی سمت چپ
+================================== -->
+
+<main class="main-column">
+
+
+<!-- جدول تیکت ها -->
+
+<section class="card">
+
+<div class="card-header">
+
+<span class="card-title">
+فهرست تیکت های من
+</span>
+
+<span class="small-label">
+کل تیکت ها: {{user_tickets | length}}
+</span>
+
+</div>
+
+
+<!-- جستجو و فیلتر -->
+
+<div class="filter-toolbar">
+
+<input
+type="text"
+id="ticketSearch"
+class="filter-control filter-search"
+placeholder="جستجو در شناسه، کد، کاربر، دریافت‌کننده یا موضوع..."
+autocomplete="off"
+>
+
+<select
+id="statusFilter"
+class="filter-control"
+>
+
+<option value="">
+همه وضعیت ها
+</option>
+
+<option value="open">
+open
+</option>
+
+<option value="close">
+close   
+</option>
+
+</select>
+
+
+<select
+id="fileFilter"
+class="filter-control"
+>
+
+<option value="">
+همه فایل ها
+</option>
+
+<option value="yes">
+دارای فایل
+</option>
+
+<option value="no">
+بدون فایل
+</option>
+
+</select>
+
+
+<button
+type="button"
+class="filter-clear"
+onclick="clearTicketFilters()"
+>
+پاک کردن فیلترها
+</button>
+
+</div>
+
+
+<!-- تعداد نتایج -->
+
+<div class="filter-result">
+
+تعداد نتایج:
+
+<strong id="visibleCount">0</strong>
+
+از
+
+<strong id="totalCount">0</strong>
+
+تیکت
+
+</div>
+
+
+<!-- جدول -->
+
+<div class="table-container">
+
+<table id="ticketTable">
+
+<thead>
+
+<tr>
+
+<th>شناسه</th>
+<th>کد</th>
+<th>کاربری</th>
+<th>دریافت‌کننده</th>
+<th>موضوع</th>
+<th>پیام</th>
+<th>فایل</th>
+<th>تاریخ</th>
+<th>ساعت</th>
+<th>توضیحات</th>
+<th>وضعیت</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% set ns = namespace(seen=[]) %}
+
+{% for ticket in user_tickets %}
+
+{% if ticket[1] not in ns.seen %}
+
+{% set ns.seen = ns.seen + [ticket[1]] %}
+
+<tr
+class="ticket-row"
+data-status="{{ticket[10]}}"
+data-file="{% if ticket[6] is not none %}yes{% else %}no{% endif %}"
+onclick="window.location='/user/{{user_info[2]}}/tickets/{{ticket[0]}}'"
+>
+
+<td class="code">
+{{ticket[0]}}
+</td>
+
+<td>
+{{ticket[1]}}
+</td>
+
+<td>
+{{ticket[2]}}
+</td>
+
+<td>
+{{ticket[3]}}
+</td>
+
+<td>
+{{ticket[4]}}
+</td>
+
+<td class="message">
+{{ticket[5]}}
+</td>
+
+<td>
+
+{% if ticket[6] is not none %}
+
+<span style="color:#c28a24">
+دارای فایل
+</span>
+
+{% else %}
+
+بدون فایل
+
+{% endif %}
+
+</td>
+
+<td>
+{{ticket[7]}}
+</td>
+
+<td>
+{{ticket[8]}}
+</td>
+
+<td>
+{{ticket[9]}}
+</td>
+
+<td>
+
+<span class="status">
+{{ticket[10]}}
+</span>
+
+</td>
+
+</tr>
+
+{% endif %}
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+
+<div id="noResults" class="no-results">
+
+هیچ تیکتی با مشخصات جستجو شده پیدا نشد.
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+
+<!-- =================================
+ستون باریک سمت راست
+================================== -->
+
+<aside class="sidebar">
+
+
+<!-- اطلاعات کاربر -->
+
+<section class="profile-card">
+
+<div class="profile-title">
+حساب کاربری
+</div>
+
+
+<div class="profile-row">
+
+<span>کاربر</span>
+
+<span>{{user_namefamily}}</span>
+
+</div>
+
+
+<div class="profile-row">
+
+<span>وضعیت</span>
+
+<span>#وضعیت</span>
+
+</div>
+
+
+<div class="profile-row">
+
+<span>توکن</span>
+
+<span>{{user_token}}</span>
+
+</div>
+
+
+<div class="profile-row">
+
+<span>نقش</span>
+
+<span>{{user_role}}</span>
+
+</div>
+
+
+<a
+href="/user/{{user_info[2]}}/edit_account"
+class="sidebar-link logout-link"
+style="margin-top:10px;border:1px solid mf0dada;border-radius:4px;"
+>
+ویرایش حساب کاربری
+</a>
+
+<a
+href="/user/{{user_info[2]}}/logout"
+class="sidebar-link logout-link"
+style="margin-top:10px;border:1px solid mf0dada;border-radius:4px;"
+>
+خروج از حساب کاربری
+</a>
+
+
+</section>
+
+
+
+<!-- دسترسی سریع -->
+
+<section class="sidebar-section">
+
+<div class="sidebar-heading">
+دسترسی سریع
+</div>
+
+
+<a
+href="/user/{{user_info[2]}}/create_ticket"
+class="sidebar-link"
+>
++ ایجاد تیکت جدید
+</a>
+
+
+</section>
+
+
+
+<!-- تیکت های باز -->
+
+<section class="sidebar-section">
+
+<div class="sidebar-heading">
+
+تیکت های باز
+
+<span class="counter">
+{{expert_open_tickets | length}}
+</span>
+
+</div>
+
+
+<div class="sidebar-list">
+
+{% for ticket in expert_open_tickets %}
+
+<a href="/user/{{user_info[2]}}/tickets/{{ticket[0]}}">
+
+{{ticket[4]}}
+
+</a>
+
+{% else %}
+
+<div class="small-label" style="padding:8px">
+تیکت بازی وجود ندارد.
+</div>
+
+{% endfor %}
+
+
+</div>
+
+</section>
+
+
+
+<!-- تیکت های بسته -->
+
+<section class="sidebar-section">
+
+<div class="sidebar-heading">
+
+تیکت های بسته
+
+<span class="counter">
+{{expert_close_tickets | length}}
+</span>
+
+</div>
+
+
+<div class="sidebar-list">
+
+{% for ticket in expert_close_tickets %}
+
+<a href="/user/{{user_info[2]}}/tickets/{{ticket[0]}}">
+
+{{ticket[4]}}
+
+</a>
+
+{% else %}
+
+<div class="small-label" style="padding:8px">
+تیکت بسته ای وجود ندارد.
+</div>
+
+{% endfor %}
+
+
+</div>
+
+</section>
+
+
+
+<!-- آمار تیکت ها -->
+
+<section class="sidebar-section">
+
+<div class="sidebar-heading">
+آمار تیکت ها
+</div>
+
+
+<div class="profile-card" style="border:none">
+
+
+<div class="profile-row">
+
+<span>کل تیکت ها</span>
+
+<span>{{user_tickets | length}}</span>
+
+</div>
+
+
+<div class="profile-row">
+
+<span>تیکت های باز</span>
+
+<span>{{expert_open_tickets | length}}</span>
+
+</div>
+
+
+<div class="profile-row">
+
+<span>تیکت های بسته</span>
+
+<span>{{expert_close_tickets | length}}</span>
+
+</div>
+
+
+</div>
+
+</section>
+
+
+</aside>
+
+</div>
+
+
+
+<!-- =================================
+JavaScript جستجو و فیلتر
+================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+const searchInput =
+document.getElementById("ticketSearch");
+
+
+const statusFilter =
+document.getElementById("statusFilter");
+
+
+const fileFilter =
+document.getElementById("fileFilter");
+
+
+const table =
+document.getElementById("ticketTable");
+
+
+const rows = Array.from(
+table.querySelectorAll("tbody tr.ticket-row")
+);
+
+
+const visibleCount =
+document.getElementById("visibleCount");
+
+
+const totalCount =
+document.getElementById("totalCount");
+
+
+const noResults =
+document.getElementById("noResults");
+
+
+totalCount.textContent = rows.length;
+
+
+
+/* یکسان سازی متن فارسی */
+
+function normalizeText(value) {
+
+return value
+.toString()
+.trim()
+.toLowerCase()
+.replace(/[ي]/g, "ی")
+.replace(/[ك]/g, "ک")
+.replace(/[\u200c\s]+/g, " ");
+
+}
+
+
+
+/* تشخیص وضعیت تیکت */
+
+function normalizeStatus(value) {
+
+value = normalizeText(value);
+
+
+if (
+value.includes("باز") ||
+value.includes("open")
+) {
+
+return "open";
+
+}
+
+
+
+if (
+value.includes("بسته") ||
+value.includes("close")
+) {
+
+return "close";
+
+}
+
+
+return "other";
+
+}
+
+
+
+/* اجرای فیلترها */
+
+function filterTickets() {
+
+
+const searchValue =
+normalizeText(searchInput.value);
+
+
+const selectedStatus =
+statusFilter.value;
+
+
+const selectedFile =
+fileFilter.value;
+
+
+let visible = 0;
+
+
+rows.forEach(function (row) {
+
+
+const cells =
+row.querySelectorAll("td");
+
+
+/*
+جستجو در:
+شناسه
+کد
+کاربر
+دریافت کننده
+موضوع
+*/
+
+const searchableText = normalizeText(
+
+Array.from(cells)
+.slice(0, 5)
+.map(cell => cell.textContent)
+.join(" ")
+
+);
+
+
+/* وضعیت */
+
+const status = normalizeStatus(
+cells[10].textContent
+);
+
+
+/* فایل */
+
+const file = row.dataset.file;
+
+
+/* بررسی جستجو */
+
+const matchesSearch =
+searchValue === "" ||
+searchableText.includes(searchValue);
+
+
+/* بررسی وضعیت */
+
+const matchesStatus =
+selectedStatus === "" ||
+status === selectedStatus;
+
+
+/* بررسی فایل */
+
+const matchesFile =
+selectedFile === "" ||
+file === selectedFile;
+
+
+/* نتیجه نهایی */
+
+const shouldShow =
+matchesSearch &&
+matchesStatus &&
+matchesFile;
+
+
+row.style.display =
+shouldShow ? "" : "none";
+
+
+if (shouldShow) {
+
+visible++;
+
+}
+
+
+});
+
+
+/* نمایش تعداد نتایج */
+
+visibleCount.textContent = visible;
+
+
+/* پیام عدم وجود نتیجه */
+
+noResults.style.display =
+visible === 0 ? "block" : "none";
+
+
+/* مخفی کردن جدول در صورت نبود نتیجه */
+
+table.style.display =
+visible === 0 ? "none" : "table";
+
+
+}
+
+
+
+/* رویدادهای جستجو */
+
+searchInput.addEventListener(
+"input",
+filterTickets
+);
+
+
+statusFilter.addEventListener(
+"change",
+filterTickets
+);
+
+
+fileFilter.addEventListener(
+"change",
+filterTickets
+);
+
+
+
+/* پاک کردن فیلترها */
+
+window.clearTicketFilters = function () {
+
+
+searchInput.value = "";
+
+statusFilter.value = "";
+
+fileFilter.value = "";
+
+
+filterTickets();
+
+};
+
+
+
+/* اجرای اولیه */
+
+filterTickets();
+
+
+});
+
+</script>
+
+
+</body>
+</html>
