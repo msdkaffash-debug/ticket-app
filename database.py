@@ -1,5 +1,7 @@
+
 import os
 import turso_serverless
+
 
 def get_db():
     return turso_serverless.connect(
