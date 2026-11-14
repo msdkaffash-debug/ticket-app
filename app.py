@@ -365,8 +365,6 @@ def edit_expert(username):
 
         finally:
             conn.close()
-        
-        # return f"<h2>The user was edited.<br><br>{date}<br>{time}"
 
 
 @app.route("/user/<username>/delete_expert/<expertusername>")
