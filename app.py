@@ -50,7 +50,7 @@ def user(username):
     username=username
     error = request.args.get('error')
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute("CREATE TABLE IF NOT EXISTS tickets(ID INTEGER PRIMARY KEY AUTOINCREMENT, code INTEGER, username TEXT, receiver TEXT, title TEXT, message TEXT, file BLOB, date TEXT, time TEXT, info TEXT, status TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
         conn.commit()
@@ -113,7 +113,7 @@ def login_check():
         username=request.form.get('pusername')
         password=request.form.get('ppass')
 
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
 
         cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT,tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -166,7 +166,7 @@ def signup_check():
             if password2!=password:
                 return render_template("signup.html", error="رمز عبور با تکرار رمز عبور مطابقت ندارد")
             password=hashlib.sha256(password.encode()).hexdigest()
-            conn=sqlite3.connect('database12.db')
+            conn=get_db()
             cur=conn.cursor()
             cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT,tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
             conn.commit()
@@ -212,7 +212,7 @@ def add_ticket(username):
             info=""
             status="open"
             
-            conn=sqlite3.connect('database12.db')
+            conn=get_db()
             
             cur=conn.cursor()
             cur.execute(f"SELECT username FROM all_users WHERE namefamily='{receiver}'")
@@ -266,7 +266,7 @@ def add_expert(username):
 
             # status="فعال"
             
-            conn=sqlite3.connect('database12.db')
+            conn=get_db()
             cur=conn.cursor()
 
             cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT, tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -298,7 +298,7 @@ def edit_expert_page(username,expert_username):
     username=username
     expert_username=expert_username
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute(f"SELECT * FROM all_users WHERE username='{username}' AND status='login'")
         users=cur.fetchone()
@@ -332,7 +332,7 @@ def edit_expert(username):
             date=str(now.month)+"/"+str(now.day)+"/"+str(now.year)
             time=str(now.hour)+":"+str(now.minute)+":"+str(now.second)
             
-            conn=sqlite3.connect('database12.db')
+            conn=get_db()
             cur=conn.cursor()
 
             cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT, tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -376,7 +376,7 @@ def delete_expert(username,expertusername):
     expertusername=expertusername
     # username='1'
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute(f"SELECT role FROM all_users WHERE username='{username}'")
         theuser=cur.fetchone()
@@ -414,7 +414,7 @@ def edit_user(username):
             if username!=user:
                 return "خطای امنیتی!"
 
-            conn=sqlite3.connect('database12.db')
+            conn=get_db()
             cur=conn.cursor()
 
             cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT, tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -440,7 +440,7 @@ def edit_user(username):
 def create_ticket(username):
     username=username
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
 
         cur.execute(f"SELECT namefamily FROM all_users WHERE role='expert'")
@@ -462,7 +462,7 @@ def create_ticket(username):
 def create_expert(username):
     username=username
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute(f"SELECT role FROM all_users WHERE username='{username}'")
         user_role=cur.fetchone()
@@ -480,7 +480,7 @@ def create_expert(username):
 def show_ticket(username,ticketID):
     username=username
     ticketID=ticketID
-    conn=sqlite3.connect('database12.db')
+    conn=get_db()
     cur=conn.cursor()
 
     cur.execute(f"SELECT * FROM all_users WHERE username='{username}'")
@@ -683,7 +683,7 @@ def show_ticket(username,ticketID):
 @app.route("/logout_all")
 def logout_all():
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db())
         cur=conn.cursor()
 
         cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT,tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -699,7 +699,7 @@ def logout_all():
 def logout(username):
     username=username
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db())
         cur=conn.cursor()
         cur.execute(f"UPDATE all_users SET status='logout' WHERE username='{username}'")
         conn.commit()
@@ -713,7 +713,7 @@ def logout(username):
 def edit_account(username):
     username=username
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute(f"SELECT namefamily,username,tel,email,status,role FROM all_users WHERE username='{username}'")
         edit_info=cur.fetchone()
@@ -725,7 +725,7 @@ def edit_account(username):
 @app.route("/showdb_allusers")
 def showdbusers():
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
         cur.execute("SELECT * FROM all_users")
         alldballusers=cur.fetchall()
@@ -739,7 +739,7 @@ def close_ticket(username,code):
     username=username
     code=int(code)
     try:
-        conn=sqlite3.connect('database12.db')
+        conn=get_db()
         cur=conn.cursor()
 
         cur.execute("CREATE TABLE IF NOT EXISTS tickets(ID INTEGER PRIMARY KEY AUTOINCREMENT, code INTEGER, username TEXT, receiver TEXT, title TEXT, message TEXT, file BLOB, date TEXT, time TEXT, info TEXT, status TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
