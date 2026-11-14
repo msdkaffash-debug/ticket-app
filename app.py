@@ -683,7 +683,7 @@ def show_ticket(username,ticketID):
 @app.route("/logout_all")
 def logout_all():
     try:
-        conn=get_db())
+        conn=get_db()
         cur=conn.cursor()
 
         cur.execute("CREATE TABLE IF NOT EXISTS all_users(ID INTEGER PRIMARY KEY AUTOINCREMENT, namefamily TEXT, username TEXT UNIQUE, password TEXT, status TEXT, access TEXT, token TEXT,tel TEXT, email TEXT, role TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -699,7 +699,7 @@ def logout_all():
 def logout(username):
     username=username
     try:
-        conn=get_db())
+        conn=get_db()
         cur=conn.cursor()
         cur.execute(f"UPDATE all_users SET status='logout' WHERE username='{username}'")
         conn.commit()
