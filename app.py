@@ -19,7 +19,7 @@ from functools import wraps
 from io import BytesIO
 
 app=Flask(__name__)
-
+print("### NEW APP VERSION 2026-11-14 ###")
 app.secret_key = "a34d@dk_-#s0jsu.Wb.!"
 
 def check_user(func):
