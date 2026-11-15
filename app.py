@@ -774,7 +774,7 @@ def response_ticket(username):
             # info=""
             status="response"
 
-            conn2=sqlite3.connect('database12.db')
+            conn2=get_db()
             
             cur=conn2.cursor()
             cur.execute("CREATE TABLE IF NOT EXISTS tickets(ID INTEGER PRIMARY KEY AUTOINCREMENT, code INTEGER, username TEXT, receiver TEXT, title TEXT, message TEXT, file BLOB, date TEXT, time TEXT, info TEXT, status TEXT, a1 TEXT, a2 TEXT, a3 TEXT, a4 TEXT, a5 TEXT, a6 TEXT, a7 TEXT, a8 TEXT, a9 TEXT, a10 TEXT)")
@@ -810,7 +810,7 @@ def erja_ticket(username):
             # info=""
             # status="response"
 
-            conn2=sqlite3.connect('database12.db')
+            conn2=get_db()
 
             cur=conn2.cursor()
             
@@ -833,7 +833,7 @@ def download_data(username, code, file_number):
     conn = None
 
     try:
-        conn = sqlite3.connect('database12.db')
+        conn =get_db()
         cur = conn.cursor()
 
         cur.execute(
