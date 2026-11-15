@@ -130,12 +130,10 @@ def login_check():
             session.clear()
             session['username'] = username
 
-            return redirect(url_for('user', username=username))
-
-
             cur.execute(f"UPDATE all_users SET status='login' WHERE username='{username}'")
             conn.commit()
             conn.close()
+            return redirect(url_for('user', username=username))
             # return render_template(f"user/{username}",username=username)
             return redirect(url_for('user', username=username))
             # return "ok"
