@@ -58,10 +58,10 @@ def user(username):
         cur.execute(f"SELECT * FROM tickets")
         all_tickets=cur.fetchall()
 
-        cur.execute("SELECT * FROM tickets WHERE username=?",(username))
+        cur.execute("SELECT * FROM tickets WHERE username=?",(username,))
         user_tickets=cur.fetchall()
 
-        cur.execute("SELECT * FROM tickets WHERE receiver=?",(username))
+        cur.execute("SELECT * FROM tickets WHERE receiver=?",(username,))
         expert_tickets=cur.fetchall()
 
         cur.execute(f"SELECT * FROM tickets WHERE username='{username}' AND status='open'")
