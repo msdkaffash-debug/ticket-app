@@ -604,13 +604,12 @@ def show_ticket(username,ticketID):
     elif user_role=='user':
         cur.execute("SELECT * FROM tickets WHERE username=?",(username,))
         user_tickets=cur.fetchall()
-        # user_tickets=list(user_tickets)
         
-        cur.execute("SELECT * FROM tickets WHERE status=?",('open',))
+        cur.execute("SELECT * FROM tickets WHERE username=? AND status=?",(username,'open'))
         open_tickets=cur.fetchall()
         open_tickets=list(open_tickets)
         
-        cur.execute("SELECT * FROM tickets WHERE status=?",('close',))
+        cur.execute("SELECT * FROM tickets WHERE username=? AND status=?",(username,'close'))
         close_tickets=cur.fetchall()
         close_tickets=list(close_tickets)
         # print(type(username))
