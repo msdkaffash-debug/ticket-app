@@ -468,7 +468,11 @@ def show_ticket(username,ticketID):
     user_role=the_user[9]
 
     if user_role=='expert':
-
+        cur.execute(f"SELECT * FROM tickets WHERE receiver=? AND ID=?",(username,ticketID))
+        ticket=cur.fetchone()
+        if not ticket:
+            return redirect(url_for('user', username=username, error='دسترسی غیرمجاز!'))
+            
         cur.execute("SELECT * FROM tickets WHERE receiver=?",(username,))
         user_tickets=cur.fetchall()
         # user_tickets=list(user_tickets)
@@ -602,6 +606,11 @@ def show_ticket(username,ticketID):
         return render_template("showticket_admin.html",user_namefamily=user_namefamily,user_role=user_role, user_info=user_info, user_tickets=user_tickets, close_tickets=close_tickets, open_tickets=open_tickets,ticketID=ticketID,ticket=ticket,ticketmsg=ticketmsg,username=username,code=code,data=data,expert_list=expert_list,expert_close_tickets=expert_close_tickets,expert_open_tickets=expert_open_tickets,receiver_namefamily=receiver_namefamily)    
         
     elif user_role=='user':
+        cur.execute(f"SELECT * FROM tickets WHERE username=? AND ID=?",(username,ticketID))
+        ticket=cur.fetchone()
+        if not ticket:
+            return redirect(url_for('user', username=username, error='دسترسی غیرمجاز!'))
+            
         cur.execute("SELECT * FROM tickets WHERE username=?",(username,))
         user_tickets=cur.fetchall()
         
