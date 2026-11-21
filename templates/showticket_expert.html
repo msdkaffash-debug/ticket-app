@@ -1867,34 +1867,36 @@ JavaScript جستجو و فیلتر
     
     
     if (
-    value.includes("جدید") ||
-    value.includes("new")
+    value.includes("ارسال شده")
     ) {
     
-    return "new";
+    return "ارسال شده";
     
     }
     
     
     if (
-    value.includes("در انتظار") ||
-    value.includes("انتظار") ||
-    value.includes("pending")
+    value.includes("در انتظار پاسخ")
     ) {
     
-    return "pending";
+    return "در انتظار پاسخ";
     
     }
     
     
     if (
-    value.includes("انجام") ||
-    value.includes("بسته") ||
-    value.includes("تکمیل") ||
-    value.includes("done")
+    value.includes("پاسخ داده شده") ||
     ) {
     
-    return "done";
+    return "پاسخ داده شده";
+    
+    }
+
+    if (
+    value.includes("بسته شده") ||
+    ) {
+    
+    return "بسته شده";
     
     }
     
