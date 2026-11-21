@@ -24,7 +24,7 @@ app.secret_key = "a34d@dk_-#s0jsu.Wb.!"
 def check_user(func):
     @wraps(func)
     def wrapper(username, *args, **kwargs):
-
+ 
         if 'username' not in session:
             return redirect(url_for('login'))
 
