@@ -1143,7 +1143,7 @@ onclick="clearTicketFilters()"
 
 <tr
 class="ticket-row"
-data-status="{{ticket[10]}}"
+data-status="{{ticket[10] | trim}}"
 data-file="{% if ticket[6] is not none %}yes{% else %}no{% endif %}"
 onclick="window.location='/user/{{user_info[2]}}/tickets/{{ticket[0]}}'"
 >
