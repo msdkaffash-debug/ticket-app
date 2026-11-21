@@ -139,7 +139,6 @@ def login_check():
         else:
             return render_template("login.html", error="نام کاربری یا رمز عبور اشتباه است")
 
-
 @app.route("/signup_check", methods=['POST'])
 def signup_check():
     if request.method=='POST':
