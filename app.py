@@ -17,10 +17,16 @@ from flask import (
 
 from functools import wraps
 from io import BytesIO
+from sms import send_sms
 
 app=Flask(__name__)
-print("### NEW APP VERSION 2026-11-14 ###")
 app.secret_key = "a34d@dk_-#s0jsu.Wb.!"
+
+# این ساختار ارسال پیامک (از سایت کاوه نگار و پس از دریافت و درج توکن) است:
+# send_sms(
+#         tel,
+#         message
+#     )
 
 def check_user(func):
     @wraps(func)
