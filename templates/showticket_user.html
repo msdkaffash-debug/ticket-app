@@ -1841,48 +1841,50 @@ return value
 
 
 /* تشخیص وضعیت تیکت */
+    
+    function normalizeStatus(value) {
+    
+    value = normalizeText(value);
+    
+    
+    if (
+    value.includes("ارسال شده")
+    ) {
+    
+    return "ارسال شده";
+    
+    }
+    
+    
+    if (
+    value.includes("در انتظار پاسخ")
+    ) {
+    
+    return "در انتظار پاسخ";
+    
+    }
+    
+    
+    if (
+    value.includes("پاسخ داده شده") ||
+    ) {
+    
+    return "پاسخ داده شده";
+    
+    }
 
-function normalizeStatus(value) {
-
-value = normalizeText(value);
-
-
-if (
-value.includes("جدید") ||
-value.includes("new")
-) {
-
-return "new";
-
-}
-
-
-if (
-value.includes("در انتظار") ||
-value.includes("انتظار") ||
-value.includes("pending")
-) {
-
-return "pending";
-
-}
-
-
-if (
-value.includes("انجام") ||
-value.includes("بسته") ||
-value.includes("تکمیل") ||
-value.includes("done")
-) {
-
-return "done";
-
-}
-
-
-return "other";
-
-}
+    if (
+    value.includes("بسته شده") ||
+    ) {
+    
+    return "بسته شده";
+    
+    }
+    
+    
+    return "other";
+    
+    }
 
 
 
