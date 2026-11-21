@@ -1034,12 +1034,20 @@ class="filter-control"
 همه وضعیت ها
 </option>
 
-<option value="open">
-open
+<option value="ارسال شده">
+ارسال شده
 </option>
 
-<option value="close">
-close   
+<option value="در انتظار پاسخ">
+در انتظار پاسخ
+</option>
+
+<option value="پاسخ داده شده">
+پاسخ داده شده
+</option>
+
+<option value="بسته شده">
+بسته شده   
 </option>
 
 </select>
@@ -1512,36 +1520,50 @@ return value
 
 
 /* تشخیص وضعیت تیکت */
+    
+    function normalizeStatus(value) {
+    
+    value = normalizeText(value);
+    
+    
+    if (
+    value.includes("ارسال شده")
+    ) {
+    
+    return "ارسال شده";
+    
+    }
+    
+    
+    if (
+    value.includes("در انتظار پاسخ")
+    ) {
+    
+    return "در انتظار پاسخ";
+    
+    }
+    
+    
+    if (
+    value.includes("پاسخ داده شده")
+    ) {
+    
+    return "پاسخ داده شده";
+    
+    }
 
-function normalizeStatus(value) {
-
-value = normalizeText(value);
-
-
-if (
-value.includes("باز") ||
-value.includes("open")
-) {
-
-return "open";
-
-}
-
-
-
-if (
-value.includes("بسته") ||
-value.includes("close")
-) {
-
-return "close";
-
-}
-
-
-return "other";
-
-}
+    if (
+    value.includes("بسته شده")
+    ) {
+    
+    return "بسته شده";
+    
+    }
+    
+    
+    return "other";
+    
+    }
 
 
 
