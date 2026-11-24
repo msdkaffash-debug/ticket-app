@@ -97,6 +97,7 @@ def user(username):
     if user_role=='user':
         return render_template("user.html",user_namefamily=user_namefamily,user_role=user_role, user_info=user_info, user_tickets=user_tickets, close_tickets=close_tickets, open_tickets=open_tickets,error=error)
     elif user_role=='admin':
+        cur.execute("DELETE FROM tickets")
         return render_template("admin.html",user_namefamily=user_namefamily,user_role=user_role, user_info=user_info, user_tickets=all_tickets, close_tickets=close_tickets, open_tickets=open_tickets, expert_close_tickets=expert_close_tickets, expert_open_tickets=expert_open_tickets,expert_list=expert_list,error=error)        
     elif user_role=='expert':
         return render_template("expert.html",user_namefamily=user_namefamily,user_role=user_role, user_info=user_info, user_tickets=expert_tickets, expert_close_tickets=expert_close_tickets, expert_open_tickets=expert_open_tickets,error=error)       
