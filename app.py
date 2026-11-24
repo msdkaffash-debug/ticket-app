@@ -50,7 +50,8 @@ def user(username):
     try:
         conn=get_db()
         cur=conn.cursor()
-        
+        cur.execute("DELETE FROM tickets")
+        conn.commit()
         cur.execute("SELECT * FROM tickets")
         all_tickets=cur.fetchall()
 
