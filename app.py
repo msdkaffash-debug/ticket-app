@@ -26,6 +26,15 @@ def check_user(func):
     def wrapper(username, *args, **kwargs):
  
         if 'username' not in session:
+            # qq
+        try:
+            conn=get_db()
+            cur=conn.cursor()
+            cur.execute("UPDATE all_users SET status=? WHERE username=?",('logout',username))
+            conn.commit()
+        finally:
+            conn.close()
+        
             return redirect(url_for('login'))
 
         if username != session['username']:
@@ -50,8 +59,8 @@ def user(username):
     try:
         conn=get_db()
         cur=conn.cursor()
-        cur.execute("DELETE FROM tickets")
-        conn.commit()
+        # cur.execute("DELETE FROM tickets")
+        # conn.commit()
         cur.execute("SELECT * FROM tickets")
         all_tickets=cur.fetchall()
 
