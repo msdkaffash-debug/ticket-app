@@ -25,17 +25,8 @@ def check_user(func):
     @wraps(func)
     def wrapper(username, *args, **kwargs):
  
-        if 'username' not in session:
-            # qq
-            try:
-                conn=get_db()
-                cur=conn.cursor()
-                cur.execute("UPDATE all_users SET status=? WHERE username=?",('logout',username))
-                conn.commit()
-            finally:
-                conn.close()
-            
-                return redirect(url_for('login'))
+        if 'username' not in session:         
+            return redirect(url_for('login'))
 
         if username != session['username']:
             abort(403)
